@@ -129,7 +129,7 @@ int main()
 	}
 }
 
-
+// starting here, my code ////////
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <vector>
