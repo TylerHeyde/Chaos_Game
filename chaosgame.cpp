@@ -107,6 +107,7 @@ int main()
 		//seems straightforward? -- amrit
 */
 		window.clear();
+		//hi -- test -- AS
 		for (int i = 0; i < vertices.size(); i++)
 		{
 			RectangleShape rect(Vector2f(10, 10));
