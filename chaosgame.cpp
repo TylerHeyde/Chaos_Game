@@ -128,3 +128,87 @@ int main()
 		window.display();
 	}
 }
+
+// starting here, this is my code.
+#include <SFML/Graphics.hpp>
+#include <iostream>
+#include <vector>
+#include <ctime>
+
+using namespace sf;
+using namespace std;
+
+int main()
+{
+    srand(static_cast<unsigned int>(time(nullptr)));
+
+    RenderWindow window(VideoMode(1920, 1080), "Chaos Game", Style::Default);
+    //this is just the triangle 
+    Font font;
+    bool hasFont = font.loadFromFile("arial.ttf"); 
+
+    Text instructions;
+    if (hasFont) {
+        instructions.setFont(font);
+        instructions.setCharacterSize(24);
+        instructions.setFillColor(Color::White);
+        instructions.setPosition(10, 10);
+        instructions.setString("Click 3 points to define the triangle!");
+    }
+
+    vector<Vector2f> vertices;
+    vector<Vector2f> points;
+    Vector2f currentPoint;
+
+    while (window.isOpen())
+    {
+        Event event;
+        while (window.pollEvent(event))
+        {
+            if (event.type == Event::Closed)
+                window.close();
+
+            if (event.type == Event::MouseButtonPressed)
+            {
+                if (vertices.size() < 3)
+                {
+                    vertices.push_back(Vector2f(event.mouseButton.x, event.mouseButton.y));
+
+                    if (vertices.size() == 3) {
+                        currentPoint = vertices[0];
+                        if (hasFont) instructions.setString("Generating Fractal...");
+                    }
+                }
+            }
+        }
+
+        
+        if (vertices.size() == 3)
+        {
+            for (int i = 0; i < 100; i++)
+            {
+                int target = rand() % 3;
+                currentPoint.x = (currentPoint.x + vertices[target].x) / 2.0f;
+                currentPoint.y = (currentPoint.y + vertices[target].y) / 2.0f;
+                points.push_back(currentPoint);
+            }
+        }
+
+        window.clear();
+
+        if (hasFont) window.draw(instructions);
+
+        
+        for (const auto& p : points)
+        {
+            CircleShape dot(1);
+            dot.setPosition(p);
+            dot.setFillColor(Color::Red);
+            window.draw(dot);
+        }
+
+        window.display();
+    }
+
+    return 0;
+}
